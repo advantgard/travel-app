@@ -3,20 +3,20 @@ import Head from "next/head";
 import Nav from "../components/nav";
 import { GoogleLoginButton } from "react-social-login-buttons";
 import { signIn, signOut, useUser } from "../hooks/auth";
+import { TripList } from "../components/trip";
 
 const LoginContainer = () => {
+  const user = useUser();
 
-    const user = useUser();
-
-    if (user) {
-        return (
-            <div>
-                Welcome {user.displayName},<strong onClick={signOut}>Sign Out</strong>
-            </div>
-        );
-    } else {
-        return <GoogleLoginButton onClick={signIn.bind(null, "google")} />;
-    }
+  if (user) {
+    return (
+      <div>
+        Welcome {user.displayName},<strong onClick={signOut}>Sign Out</strong>
+      </div>
+    );
+  } else {
+    return <GoogleLoginButton onClick={signIn.bind(null, "google")} />;
+  }
 };
 
 const Home = () => (
@@ -30,6 +30,7 @@ const Home = () => (
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
         crossOrigin="anonymous"
       />
+      <link rel="stylesheet" href="/styles/react-datepicker.min.css" />
     </Head>
 
     <Nav />
@@ -59,7 +60,10 @@ const Home = () => (
       </div>
     </div>
     <div className="container">
-        <LoginContainer/>
+      <TripList />
+    </div>
+    <div className="container">
+      <LoginContainer />
     </div>
 
     <style jsx>{`
