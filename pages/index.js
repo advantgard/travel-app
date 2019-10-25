@@ -1,6 +1,23 @@
 import React from "react";
 import Head from "next/head";
 import Nav from "../components/nav";
+import { GoogleLoginButton } from "react-social-login-buttons";
+import { signIn, signOut, useUser } from "../hooks/auth";
+
+const LoginContainer = () => {
+
+    const user = useUser();
+
+    if (user) {
+        return (
+            <div>
+                Welcome {user.displayName},<strong onClick={signOut}>Sign Out</strong>
+            </div>
+        );
+    } else {
+        return <GoogleLoginButton onClick={signIn.bind(null, "google")} />;
+    }
+};
 
 const Home = () => (
   <div>
@@ -40,6 +57,9 @@ const Home = () => (
           <p>Find other example boilerplates on the Next.js GitHub.</p>
         </a>
       </div>
+    </div>
+    <div className="container">
+        <LoginContainer/>
     </div>
 
     <style jsx>{`
