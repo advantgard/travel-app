@@ -1,56 +1,48 @@
-import React from "react";
-import Link from "next/link";
+import React, { useState } from "react";
+import { signOut, useUser } from "../hooks/auth";
+import { LogInWidget } from "./auth";
 
-const links = [
-  { href: "https://zeit.co/now", label: "ZEIT" },
-  { href: "https://github.com/zeit/next.js", label: "GitHub" }
-].map(link => {
-  link.key = `nav-link-${link.href}-${link.label}`;
-  return link;
-});
+export const Nav = () => {
+  const user = useUser();
+  const [displayLogin, changeDisplayLogin] = useState(false);
 
-const Nav = () => (
-  <nav>
-    <ul>
-      <li>
-        <Link href="/">
-          <a>Home</a>
-        </Link>
-      </li>
-      {links.map(({ key, href, label }) => (
-        <li key={key}>
-          <a href={href}>{label}</a>
-        </li>
-      ))}
-    </ul>
+  const NavLogIn = () => {
+    const user = useUser();
 
-    <style jsx>{`
-      :global(body) {
-        margin: 0;
-        font-family: -apple-system, BlinkMacSystemFont, Avenir Next, Avenir,
-          Helvetica, sans-serif;
-      }
-      nav {
-        text-align: center;
-      }
-      ul {
-        display: flex;
-        justify-content: space-between;
-      }
-      nav > ul {
-        padding: 4px 16px;
-      }
-      li {
-        display: flex;
-        padding: 6px 8px;
-      }
-      a {
-        color: #067df7;
-        text-decoration: none;
-        font-size: 13px;
-      }
-    `}</style>
-  </nav>
-);
+    if (user) {
+      return (
+        <div>
+          Logged in as {user.displayName},
+          <a href="#" onClick={signOut}>
+            Log Out
+          </a>
+        </div>
+      );
+    } else {
+      return (
+        <button
+          className="btn btn-primary"
+          onClick={() => {
+            changeDisplayLogin(!displayLogin);
+          }}
+        >
+          Log In
+        </button>
+      );
+    }
+  };
 
-export default Nav;
+  return (
+    <header>
+      <nav className="navbar navbar-light bg-light justify-content-between mb-3">
+        <div className="container">
+          <span className="navbar-brand mb-0 h1">Travel Planner Next</span>
+          <div>
+            <NavLogIn />
+          </div>
+        </div>
+      </nav>
+      {displayLogin && !user ? <LogInWidget /> : ""}
+    </header>
+  );
+};
