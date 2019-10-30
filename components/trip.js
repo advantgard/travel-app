@@ -45,75 +45,40 @@ export const TripList = () => {
       <h1>Trips</h1>
       {trips.map(trip => (
         <div key={trip.id}>
-          <div className="row">
-            <div className="col-sm-12 text-center">
-              {new Date(
-                trip.departure_time.seconds * 1000
-              ).toLocaleDateString()}
-            </div>
-          </div>
-          <div className="row mb-3">
-            <div className="col-sm-4">
-              <div>
-                {new Date(
-                  trip.departure_time.seconds * 1000
-                ).toLocaleDateString()}
+          <div className="card mb-3">
+              <div className="card-header text-center">
+                  Departing on&nbsp;
+                  <strong>
+                      {new Date(
+                          trip.departure_time.seconds * 1000
+                      ).toLocaleDateString()}
+                  </strong>
               </div>
-              <div>{trip.origin}</div>
-            </div>
-            <div className="col-sm-4">
-              Flight duration:
-              {` ${(trip.arrival_time.seconds - trip.departure_time.seconds) /
-                3600} hrs`}
-            </div>
-            <div className="col-sm-4">
-              <div>
-                {new Date(
-                  trip.arrival_time.seconds * 1000
-                ).toLocaleDateString()}
+              <div className="card-body">
+                  <div className="row">
+                      <div className="col-sm-4">
+                          <h5 className="card-title">
+                              {new Date(
+                                  trip.departure_time.seconds * 1000
+                              ).toLocaleDateString()}
+                          </h5>
+                          <div className="card-subtitle">{trip.origin}</div>
+                      </div>
+                      <div className="col-sm-4">
+                          Flight duration:
+                          {` ${(trip.arrival_time.seconds - trip.departure_time.seconds) /
+                          3600} hrs`}
+                      </div>
+                      <div className="col-sm-4">
+                          <h5 className="card-title">
+                              {new Date(
+                                  trip.arrival_time.seconds * 1000
+                              ).toLocaleDateString()}
+                          </h5>
+                          <div className="card-subtitle">{trip.destination}</div>
+                      </div>
+                  </div>
               </div>
-              <div>{trip.destination}</div>
-            </div>
-          </div>
-          <div className="row mb-3">
-            <div className="col-sm-6">
-              <div className="card">
-                <div className="card-header">Departure information</div>
-                <ul className="list-group list-group-flush">
-                  <li className="list-group-item">
-                    <span className="font-weight-bold mr-3">Origin: </span>
-                    {trip.origin}
-                  </li>
-                  <li className="list-group-item">
-                    <span className="font-weight-bold mr-3">
-                      Departure Time:{" "}
-                    </span>
-                    {new Date(
-                      trip.departure_time.seconds * 1000
-                    ).toLocaleDateString()}
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div className="col-sm-6">
-              <div className="card">
-                <div className="card-header">Destination information</div>
-                <ul className="list-group list-group-flush">
-                  <li className="list-group-item">
-                    <span className="font-weight-bold mr-3">Destination: </span>
-                    {trip.destination}
-                  </li>
-                  <li className="list-group-item">
-                    <span className="font-weight-bold mr-3">
-                      Arrival Time:{" "}
-                    </span>
-                    {new Date(
-                      trip.arrival_time.seconds * 1000
-                    ).toLocaleDateString()}
-                  </li>
-                </ul>
-              </div>
-            </div>
           </div>
         </div>
       ))}
