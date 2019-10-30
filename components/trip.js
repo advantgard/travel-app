@@ -45,11 +45,34 @@ export const TripList = () => {
       <h1>Trips</h1>
       {trips.map(trip => (
         <div key={trip.id}>
+          <div className="row">
+            <div className="col-sm-12 text-center">
+              {new Date(
+                trip.departure_time.seconds * 1000
+              ).toLocaleDateString()}
+            </div>
+          </div>
           <div className="row mb-3">
-            <div className="col-sm-12">
-              <span className="h2">
-                {trip.origin} -> {trip.destination}
-              </span>
+            <div className="col-sm-4">
+              <div>
+                {new Date(
+                  trip.departure_time.seconds * 1000
+                ).toLocaleDateString()}
+              </div>
+              <div>{trip.origin}</div>
+            </div>
+            <div className="col-sm-4">
+              Flight duration:
+              {` ${(trip.arrival_time.seconds - trip.departure_time.seconds) /
+                3600} hrs`}
+            </div>
+            <div className="col-sm-4">
+              <div>
+                {new Date(
+                  trip.arrival_time.seconds * 1000
+                ).toLocaleDateString()}
+              </div>
+              <div>{trip.destination}</div>
             </div>
           </div>
           <div className="row mb-3">
