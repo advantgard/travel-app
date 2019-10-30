@@ -12,7 +12,7 @@ export const Nav = () => {
     if (user) {
       return (
         <div>
-          Logged in as {user.displayName},
+          Logged in as {user.displayName},&nbsp;
           <a href="#" onClick={signOut}>
             Log Out
           </a>
