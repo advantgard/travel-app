@@ -46,39 +46,40 @@ export const TripList = () => {
       {trips.map(trip => (
         <div key={trip.id}>
           <div className="card mb-3">
-              <div className="card-header text-center">
-                  Departing on&nbsp;
-                  <strong>
-                      {new Date(
-                          trip.departure_time.seconds * 1000
-                      ).toLocaleDateString()}
-                  </strong>
+            <div className="card-header text-center">
+              Departing on&nbsp;
+              <strong>
+                {new Date(
+                  trip.departure_time.seconds * 1000
+                ).toLocaleDateString()}
+              </strong>
+            </div>
+            <div className="card-body">
+              <div className="row">
+                <div className="col-sm-4">
+                  <h5 className="card-title">
+                    {new Date(
+                      trip.departure_time.seconds * 1000
+                    ).toLocaleDateString()}
+                  </h5>
+                  <div className="card-subtitle">{trip.origin}</div>
+                </div>
+                <div className="col-sm-4">
+                  Flight duration:
+                  {` ${(trip.arrival_time.seconds -
+                    trip.departure_time.seconds) /
+                    3600} hrs`}
+                </div>
+                <div className="col-sm-4">
+                  <h5 className="card-title">
+                    {new Date(
+                      trip.arrival_time.seconds * 1000
+                    ).toLocaleDateString()}
+                  </h5>
+                  <div className="card-subtitle">{trip.destination}</div>
+                </div>
               </div>
-              <div className="card-body">
-                  <div className="row">
-                      <div className="col-sm-4">
-                          <h5 className="card-title">
-                              {new Date(
-                                  trip.departure_time.seconds * 1000
-                              ).toLocaleDateString()}
-                          </h5>
-                          <div className="card-subtitle">{trip.origin}</div>
-                      </div>
-                      <div className="col-sm-4">
-                          Flight duration:
-                          {` ${(trip.arrival_time.seconds - trip.departure_time.seconds) /
-                          3600} hrs`}
-                      </div>
-                      <div className="col-sm-4">
-                          <h5 className="card-title">
-                              {new Date(
-                                  trip.arrival_time.seconds * 1000
-                              ).toLocaleDateString()}
-                          </h5>
-                          <div className="card-subtitle">{trip.destination}</div>
-                      </div>
-                  </div>
-              </div>
+            </div>
           </div>
         </div>
       ))}
