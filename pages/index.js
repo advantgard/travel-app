@@ -3,6 +3,7 @@ import Head from "next/head";
 import { useUser } from "../hooks/auth";
 import { Nav } from "../components/nav";
 import { TripList, TripNew } from "../components/trip";
+import {AirportSelect} from "../components/airport";
 
 const Home = () => {
   const user = useUser();
@@ -30,6 +31,11 @@ const Home = () => {
             <div className="col-sm-10">
                 <TripList />
                 { user ? <TripNew/> : "" }
+                <div className="card mt-3">
+                    <div className="card-body">
+                        <AirportSelect/>
+                    </div>
+                </div>
             </div>
         </div>
       </div>
