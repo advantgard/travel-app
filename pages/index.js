@@ -3,7 +3,7 @@ import Head from "next/head";
 import { useUser } from "../hooks/auth";
 import { Nav } from "../components/nav";
 import { TripList, TripNew } from "../components/trip";
-import {AirportSelect} from "../components/airport";
+import { AirportSelect } from "../components/airport";
 
 const Home = () => {
   const user = useUser();
@@ -25,18 +25,16 @@ const Home = () => {
       <Nav />
       <div className="container">
         <div className="row">
-            <div className="col-sm-2">
-                Friend Section
+          <div className="col-sm-2">Friend Section</div>
+          <div className="col-sm-10">
+            <TripList />
+            {user ? <TripNew /> : ""}
+            <div className="card mt-3">
+              <div className="card-body">
+                <AirportSelect />
+              </div>
             </div>
-            <div className="col-sm-10">
-                <TripList />
-                { user ? <TripNew/> : "" }
-                <div className="card mt-3">
-                    <div className="card-body">
-                        <AirportSelect/>
-                    </div>
-                </div>
-            </div>
+          </div>
         </div>
       </div>
     </div>
