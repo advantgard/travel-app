@@ -49,10 +49,10 @@ export const AirportSelect = ({
   };
 
   const SuggestionList = () => (
-    <ul className="list-group">
+    <ul className="list-group position-absolute">
       {suggestions.map((airport, index) => (
         <li
-          key={airport.iata}
+          key={`${airport.iata}-${index}`}
           className={`list-group-item list-group-item-action`}
           onClick={() => {
             selectItem(airport);
