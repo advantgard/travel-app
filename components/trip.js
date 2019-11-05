@@ -3,32 +3,30 @@ import { useUser } from "../hooks/auth";
 import DatePicker from "react-datepicker";
 
 import Firebase from "../services/firebase";
+import { AirportSelect } from "./airport";
 
 function useUserTrips() {
   const user = useUser();
 
   const [trips, setTrips] = useState([]);
 
-  useEffect(
-    () => {
-      if (user) {
-        Firebase.firestore()
-          .collection("users")
-          .doc(user.uid)
-          .collection("trips")
-          .onSnapshot(snapshot => {
-            const items = snapshot.docs.map(doc => ({
-              id: doc.id,
-              ...doc.data()
-            }));
-            setTrips(items);
-          });
-      } else {
-        setTrips([]);
-      }
-    },
-    [user]
-  );
+  useEffect(() => {
+    if (user) {
+      Firebase.firestore()
+        .collection("users")
+        .doc(user.uid)
+        .collection("trips")
+        .onSnapshot(snapshot => {
+          const items = snapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+          }));
+          setTrips(items);
+        });
+    } else {
+      setTrips([]);
+    }
+  }, [user]);
 
   return trips;
 }
@@ -62,7 +60,7 @@ export const TripList = () => {
                       trip.departure_time.seconds * 1000
                     ).toLocaleDateString()}
                   </h5>
-                  <div className="card-subtitle">{trip.origin}</div>
+                  <div className="card-subtitle">{trip.origin_iata}</div>
                 </div>
                 <div className="col-sm-4">
                   Flight duration:
@@ -76,7 +74,7 @@ export const TripList = () => {
                       trip.arrival_time.seconds * 1000
                     ).toLocaleDateString()}
                   </h5>
-                  <div className="card-subtitle">{trip.destination}</div>
+                  <div className="card-subtitle">{trip.destination_iata}</div>
                 </div>
               </div>
             </div>
@@ -88,8 +86,8 @@ export const TripList = () => {
 };
 
 export const TripNew = () => {
-  const [origin, setOrigin] = useState("");
-  const [destination, setDestination] = useState("");
+  const [origin, setOrigin] = useState(null);
+  const [destination, setDestination] = useState(null);
   const [departureTime, setDepartureTime] = useState(new Date());
   const [arrivalTime, setArrivalTime] = useState(new Date());
 
@@ -98,19 +96,29 @@ export const TripNew = () => {
   function onSubmit(e) {
     e.preventDefault();
 
+    if(!origin || !destination) {
+      return console.warn("Value is required");
+    }
+
     Firebase.firestore()
       .collection("users")
       .doc(user.uid)
       .collection("trips")
       .add({
-        origin,
-        destination,
+        origin_iata: origin.iata,
+        origin_airport: origin.name,
+        origin_city: origin.city,
+        origin_country: origin.country,
+        destination_iata: destination.iata,
+        destination_airport: destination.name,
+        destination_city: destination.city,
+        destination_country: destination.country,
         departure_time: departureTime,
         arrival_time: arrivalTime
       })
       .then(() => {
-        setOrigin("");
-        setDestination("");
+        setOrigin(null);
+        setDestination(null);
       });
   }
 
@@ -118,23 +126,19 @@ export const TripNew = () => {
     <form onSubmit={onSubmit}>
       <div className="form-row">
         <div className="form-group col-md-6">
-          <label htmlFor="inputEmail4">Origin</label>
-          <input
-            type="text"
-            className="form-control"
-            id="inputEmail4"
-            value={origin}
-            onChange={e => setOrigin(e.currentTarget.value)}
+          <label htmlFor="origin-airport">Origin</label>
+          <AirportSelect
+            selected={origin}
+            onSelect={airport => setOrigin(airport)}
+            id="origin-airport"
           />
         </div>
         <div className="form-group col-md-6">
-          <label htmlFor="inputPassword4">Destination</label>
-          <input
-            type="text"
-            className="form-control"
-            id="inputPassword4"
-            value={destination}
-            onChange={e => setDestination(e.currentTarget.value)}
+          <label htmlFor="destination-airport">Destination</label>
+          <AirportSelect
+            selected={destination}
+            onSelect={airport => setDestination(airport)}
+            id="destination-airport"
           />
         </div>
       </div>

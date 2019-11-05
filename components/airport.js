@@ -70,8 +70,7 @@ export const AirportSelect = ({
   );
 
   return (
-    <div className="form-group">
-      <label htmlFor={id}>Origin</label>
+    <>
       <input
         className="form-control"
         id={id}
@@ -87,6 +86,6 @@ export const AirportSelect = ({
         }}
       />
       {suggestions ? <SuggestionList /> : ""}
-    </div>
+    </>
   );
 };
