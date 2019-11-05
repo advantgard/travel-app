@@ -3,12 +3,16 @@ import { airports } from "../data/airports";
 import Fuse from "fuse.js";
 
 export const AirportSelect = ({
+  selected = null,
+  onSelect = () => {},
+  id = Math.random()
+    .toString(36)
+    .substring(2, 5),
   autocompleteOnLength = 3,
   limitSuggestions = 10
 }) => {
   const [searchText, changeSearchText] = useState("");
   const [suggestions, changeSuggestions] = useState([]);
-  const [selected, changeSelected] = useState(null);
 
   const fuseOptions = {
     shouldSort: true,
@@ -43,7 +47,7 @@ export const AirportSelect = ({
   };
 
   const selectItem = airport => {
-    changeSelected(airport);
+    onSelect(airport);
     changeSearchText("");
     changeSuggestions([]);
   };
@@ -52,7 +56,7 @@ export const AirportSelect = ({
     <ul className="list-group position-absolute">
       {suggestions.map((airport, index) => (
         <li
-          key={`${airport.iata}-${index}`}
+          key={`${id}-${airport.iata}-${index}`}
           className={`list-group-item list-group-item-action`}
           onClick={() => {
             selectItem(airport);
@@ -67,16 +71,14 @@ export const AirportSelect = ({
 
   return (
     <div className="form-group">
-      <label htmlFor="origin">Origin</label>
+      <label htmlFor={id}>Origin</label>
       <input
         className="form-control"
-        id="origin"
+        id={id}
         type="text"
         placeholder={
           selected
-            ? `${selected.iata} - ${selected.name}, ${selected.city}, ${
-                selected.country
-              }`
+            ? `${selected.iata} - ${selected.name}, ${selected.city}, ${selected.country}`
             : ""
         }
         value={searchText}
