@@ -6,31 +6,20 @@ export const Nav = () => {
   const user = useUser();
   const [displayLogin, changeDisplayLogin] = useState(false);
 
-  const NavLogIn = () => {
-    const user = useUser();
+  const LogInText = ({ displayName, signOutFn }) => (
+    <div>
+      Logged in as {displayName},&nbsp;
+      <a href="#" onClick={signOutFn}>
+        Log Out
+      </a>
+    </div>
+  );
 
-    if (user) {
-      return (
-        <div>
-          Logged in as {user.displayName},&nbsp;
-          <a href="#" onClick={signOut}>
-            Log Out
-          </a>
-        </div>
-      );
-    } else {
-      return (
-        <button
-          className="btn btn-primary"
-          onClick={() => {
-            changeDisplayLogin(!displayLogin);
-          }}
-        >
-          Log In
-        </button>
-      );
-    }
-  };
+  const LogInButton = ({ onClick }) => (
+    <button className="btn btn-primary" onClick={onClick}>
+      Log In
+    </button>
+  );
 
   return (
     <header>
@@ -38,7 +27,15 @@ export const Nav = () => {
         <div className="container">
           <span className="navbar-brand mb-0 h1">Travel Planner Next</span>
           <div>
-            <NavLogIn />
+            {user ? (
+              <LogInText displayName={user.displayName} signOutFn={signOut} />
+            ) : (
+              <LogInButton
+                onClick={() => {
+                  changeDisplayLogin(!displayLogin);
+                }}
+              />
+            )}
           </div>
         </div>
       </nav>

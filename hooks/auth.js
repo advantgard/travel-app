@@ -58,13 +58,17 @@ export function useUser() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    firebase.auth().onAuthStateChanged(userData => {
+
+    let firebaseAuthListener = firebase.auth().onAuthStateChanged(userData => {
       if (userData) {
         setUser(userData);
       } else {
         setUser(null);
       }
     });
+
+    return () => { firebaseAuthListener = null; };
+
   }, []);
 
   return user;
