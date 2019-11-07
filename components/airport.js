@@ -96,5 +96,5 @@ AirportSelect.propTypes = {
   onSelect: PropTypes.func,
   id: PropTypes.string,
   autocompleteOnLength: PropTypes.number,
-  limitSuggestions: PropTypes.numer
+  limitSuggestions: PropTypes.number
 };
