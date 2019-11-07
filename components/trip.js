@@ -86,10 +86,17 @@ export const TripList = () => {
 };
 
 export const TripNew = () => {
+  const [airline, setAirline] = useState("");
+  const [flightId, setFlightId] = useState("");
   const [origin, setOrigin] = useState(null);
   const [destination, setDestination] = useState(null);
   const [departureTime, setDepartureTime] = useState(new Date());
   const [arrivalTime, setArrivalTime] = useState(new Date());
+  const [reservationId, setReservationId] = useState("");
+  const [seatId, setSeatId] = useState("");
+  const [gate, setGate] = useState("");
+  const [travelClass, setTravelClass] = useState("economy");
+  const [additionalNotes, setAdditionalNotes] = useState("");
 
   const user = useUser();
 
@@ -105,6 +112,8 @@ export const TripNew = () => {
       .doc(user.uid)
       .collection("trips")
       .add({
+        airline: airline,
+        flight_id: flightId,
         origin_iata: origin.iata,
         origin_airport: origin.name,
         origin_city: origin.city,
@@ -114,9 +123,15 @@ export const TripNew = () => {
         destination_city: destination.city,
         destination_country: destination.country,
         departure_time: departureTime,
-        arrival_time: arrivalTime
+        arrival_time: arrivalTime,
+        reservation_id: reservationId,
+        seat_id: seatId,
+        gate: gate,
+        travel_class: travelClass,
+        additional_notes: additionalNotes
       })
       .then(() => {
+        setAirline("");
         setOrigin(null);
         setDestination(null);
       });
@@ -132,11 +147,27 @@ export const TripNew = () => {
           <div className="form-row">
             <div className="form-group col-md-8">
               <label htmlFor="airline">Airline</label>
-              <input id="airline" type="text" className="form-control" />
+              <input
+                id="airline"
+                value={airline}
+                type="text"
+                className="form-control"
+                onChange={e => {
+                  setAirline(e.currentTarget.value);
+                }}
+              />
             </div>
             <div className="form-group col-md-4">
               <label htmlFor="flight-id">Flight No.</label>
-              <input id="flight-id" type="text" className="form-control" />
+              <input
+                id="flight-id"
+                value={flightId}
+                type="text"
+                className="form-control"
+                onChange={e => {
+                  setFlightId(e.currentTarget.value);
+                }}
+              />
             </div>
           </div>
           <div className="form-row">
@@ -185,30 +216,54 @@ export const TripNew = () => {
           <div className="form-row">
             <div className="form-group col-md-4">
               <label htmlFor="reservation-id">Reservation ID</label>
-              <input id="reservation-id" type="text" className="form-control" />
+              <input
+                id="reservation-id"
+                value={reservationId}
+                type="text"
+                className="form-control"
+                onChange={e => setReservationId(e.currentTarget.value)}
+              />
             </div>
             <div className="form-group col-md-4">
               <label htmlFor="seat-id">
                 Seat No.{" "}
                 <small className="text-secondary">(if available)</small>
               </label>
-              <input id="seat-id" type="text" className="form-control" />
+              <input
+                id="seat-id"
+                value={seatId}
+                type="text"
+                className="form-control"
+                onChange={e => setSeatId(e.currentTarget.value)}
+              />
             </div>
             <div className="form-group col-md-4">
-              <label htmlFor="seat-id">
+              <label htmlFor="gate">
                 Gate <small className="text-secondary">(if available)</small>
               </label>
-              <input id="seat-id" type="text" className="form-control" />
+              <input
+                id="gate"
+                value={gate}
+                type="text"
+                className="form-control"
+                onChange={e => setGate(e.currentTarget.value)}
+              />
             </div>
           </div>
           <div className="form-row">
             <div className="form-group col-md-4">
               <label htmlFor="class">Class</label>
-              <select name="class" id="class" className="form-control">
-                <option selected>Economy</option>
-                <option>Economy Plus</option>
-                <option>Business</option>
-                <option>First Class</option>
+              <select
+                name="class"
+                defaultValue={travelClass}
+                id="class"
+                className="form-control"
+                onChange={e => setTravelClass(e.currentTarget.value)}
+              >
+                <option value="economy">Economy</option>
+                <option value="economy-plus">Economy Plus</option>
+                <option value="business">Business</option>
+                <option value="first-class">First Class</option>
               </select>
             </div>
             <div className="form-group col-md-4">
@@ -218,7 +273,13 @@ export const TripNew = () => {
           </div>
           <div className="form-group">
             <label htmlFor="notes">Notes</label>
-            <textarea className="form-control w-100" id="notes" rows="3" />
+            <textarea
+              className="form-control w-100"
+              value={additionalNotes}
+              id="notes"
+              rows="3"
+              onChange={e => setAdditionalNotes(e.currentTarget.value)}
+            />
           </div>
         </div>
         <div className="card-footer text-right">
