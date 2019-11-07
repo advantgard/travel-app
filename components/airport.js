@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 import { airports } from "../data/airports";
 import Fuse from "fuse.js";
 
@@ -53,7 +54,7 @@ export const AirportSelect = ({
   };
 
   const SuggestionList = () => (
-    <ul className="list-group position-absolute">
+    <ul className="list-group position-absolute" style={{zIndex: 1000}}>
       {suggestions.map((airport, index) => (
         <li
           key={`${id}-${airport.iata}-${index}`}
@@ -88,4 +89,12 @@ export const AirportSelect = ({
       {suggestions ? <SuggestionList /> : ""}
     </>
   );
+};
+
+AirportSelect.propTypes = {
+  selected: PropTypes.object,
+  onSelect: PropTypes.func,
+  id: PropTypes.string,
+  autocompleteOnLength: PropTypes.number,
+  limitSuggestions: PropTypes.numer
 };

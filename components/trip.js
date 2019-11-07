@@ -35,12 +35,12 @@ export const TripList = () => {
   const trips = useUserTrips();
 
   if (!trips.length) {
-    return <div>You don't have any trips</div>;
+    return <div>You don&apos;t have any trips</div>;
   }
 
   return (
     <div>
-      <h1>Trips</h1>
+      <h2 className="display-5 my-3">Your Trips</h2>
       {trips.map(trip => (
         <div key={trip.id}>
           <div className="card mb-3">
@@ -96,7 +96,7 @@ export const TripNew = () => {
   function onSubmit(e) {
     e.preventDefault();
 
-    if(!origin || !destination) {
+    if (!origin || !destination) {
       return console.warn("Value is required");
     }
 
@@ -124,44 +124,106 @@ export const TripNew = () => {
 
   return (
     <form onSubmit={onSubmit}>
-      <div className="form-row">
-        <div className="form-group col-md-6">
-          <label htmlFor="origin-airport">Origin</label>
-          <AirportSelect
-            selected={origin}
-            onSelect={airport => setOrigin(airport)}
-            id="origin-airport"
-          />
+      <div className="card bg-light">
+        <div className="card-header">
+          <strong>Add a new trip</strong>
         </div>
-        <div className="form-group col-md-6">
-          <label htmlFor="destination-airport">Destination</label>
-          <AirportSelect
-            selected={destination}
-            onSelect={airport => setDestination(airport)}
-            id="destination-airport"
-          />
+        <div className="card-body">
+          <div className="form-row">
+            <div className="form-group col-md-8">
+              <label htmlFor="airline">Airline</label>
+              <input id="airline" type="text" className="form-control" />
+            </div>
+            <div className="form-group col-md-4">
+              <label htmlFor="flight-id">Flight No.</label>
+              <input id="flight-id" type="text" className="form-control" />
+            </div>
+          </div>
+          <div className="form-row">
+            <div className="form-group col-md-6">
+              <label htmlFor="origin-airport">Origin</label>
+              <AirportSelect
+                selected={origin}
+                onSelect={airport => setOrigin(airport)}
+                id="origin-airport"
+              />
+            </div>
+            <div className="form-group col-md-6">
+              <label htmlFor="destination-airport">Destination</label>
+              <AirportSelect
+                selected={destination}
+                onSelect={airport => setDestination(airport)}
+                id="destination-airport"
+              />
+            </div>
+          </div>
+          <div className="form-row">
+            <div className="form-group col-md-6">
+              <label htmlFor="">Departure Time</label>
+              <div>
+                <DatePicker
+                  className="form-control"
+                  selected={departureTime}
+                  onChange={date => setDepartureTime(date)}
+                />
+              </div>
+            </div>
+            <div className="form-group col-md-6">
+              <label htmlFor="">Arrival Time</label>
+              <div>
+                <DatePicker
+                  className="form-control"
+                  selected={arrivalTime}
+                  onChange={date => setArrivalTime(date)}
+                />
+              </div>
+            </div>
+          </div>
+          <div className="form-row">
+            <h5 className="my-3">Flight Details</h5>
+          </div>
+          <div className="form-row">
+            <div className="form-group col-md-4">
+              <label htmlFor="reservation-id">Reservation ID</label>
+              <input id="reservation-id" type="text" className="form-control" />
+            </div>
+            <div className="form-group col-md-4">
+              <label htmlFor="seat-id">
+                Seat No.{" "}
+                <small className="text-secondary">(if available)</small>
+              </label>
+              <input id="seat-id" type="text" className="form-control" />
+            </div>
+            <div className="form-group col-md-4">
+              <label htmlFor="seat-id">
+                Gate <small className="text-secondary">(if available)</small>
+              </label>
+              <input id="seat-id" type="text" className="form-control" />
+            </div>
+          </div>
+          <div className="form-row">
+            <div className="form-group col-md-4">
+              <label htmlFor="class">Class</label>
+              <select name="class" id="class" className="form-control">
+                <option selected>Economy</option>
+                <option>Economy Plus</option>
+                <option>Business</option>
+                <option>First Class</option>
+              </select>
+            </div>
+            <div className="form-group col-md-4">
+              <label htmlFor="baggage">Baggage Allowance</label>
+              <input id="baggage" type="text" className="form-control" />
+            </div>
+          </div>
+          <div className="form-group">
+            <label htmlFor="notes">Notes</label>
+            <textarea className="form-control w-100" id="notes" rows="3" />
+          </div>
         </div>
-      </div>
-      <div className="form-row">
-        <div className="form-group col-md-6">
-          <label htmlFor="">Departure Time</label>
-          <DatePicker
-            className="form-control"
-            selected={departureTime}
-            onChange={date => setDepartureTime(date)}
-          />
+        <div className="card-footer text-right">
+          <button className="btn btn-primary">Submit</button>
         </div>
-        <div className="form-group col-md-6">
-          <label htmlFor="">Arrival Time</label>
-          <DatePicker
-            className="form-control"
-            selected={arrivalTime}
-            onChange={date => setArrivalTime(date)}
-          />
-        </div>
-      </div>
-      <div className="form-row">
-        <button className="btn btn-primary">Submit</button>
       </div>
     </form>
   );
