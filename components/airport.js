@@ -54,7 +54,7 @@ export const AirportSelect = ({
   };
 
   const SuggestionList = () => (
-    <ul className="list-group position-absolute" style={{zIndex: 1000}}>
+    <ul className="list-group position-absolute" style={{ zIndex: 1000 }}>
       {suggestions.map((airport, index) => (
         <li
           key={`${id}-${airport.iata}-${index}`}
@@ -75,6 +75,7 @@ export const AirportSelect = ({
       <input
         className="form-control"
         id={id}
+        name={id}
         type="text"
         placeholder={
           selected
@@ -85,6 +86,7 @@ export const AirportSelect = ({
         onChange={e => {
           doSearch(e.currentTarget.value);
         }}
+        autoComplete="off"
       />
       {suggestions ? <SuggestionList /> : ""}
     </>

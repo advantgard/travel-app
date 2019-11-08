@@ -86,7 +86,6 @@ export const TripList = () => {
 };
 
 function addNewTrip(data, e) {
-
   console.log(data);
   e.target.reset();
 
@@ -102,7 +101,14 @@ function addNewTrip(data, e) {
 }
 
 export const TripNew = () => {
-  const { handleSubmit, register } = useForm();
+  const [origin, setOrigin] = useState(null);
+  const [destination, setDestination] = useState(null);
+
+  const { handleSubmit, register, setValue } = useForm();
+
+  function registerAirport(key, airport) {
+    setValue(key, airport);
+  }
 
   return (
     <form onSubmit={handleSubmit(addNewTrip)}>
@@ -136,11 +142,27 @@ export const TripNew = () => {
           <div className="form-row">
             <div className="form-group col-md-6">
               <label htmlFor="origin-airport">Origin</label>
-              <AirportSelect id="origin-airport" />
+              <AirportSelect
+                id="origin_airport"
+                selected={origin}
+                onSelect={airport => {
+                  setOrigin(airport);
+                  registerAirport("origin", airport);
+                }}
+                ref={register({ name: "origin" })}
+              />
             </div>
             <div className="form-group col-md-6">
               <label htmlFor="destination-airport">Destination</label>
-              <AirportSelect id="destination-airport" />
+              <AirportSelect
+                id="destination-airport"
+                selected={destination}
+                onSelect={airport => {
+                  setDestination(airport);
+                  registerAirport("destination", airport);
+                }}
+                ref={register({ name: "destination" })}
+              />
             </div>
           </div>
           <div className="form-row">
@@ -202,7 +224,7 @@ export const TripNew = () => {
               <label htmlFor="travel-class">Class</label>
               <select
                 id="travel-class"
-                name="travel-class"
+                name="travel_class"
                 defaultValue="economy"
                 className="form-control"
                 ref={register}
@@ -230,10 +252,7 @@ export const TripNew = () => {
           </div>
         </div>
         <div className="card-footer text-right">
-          <input
-            type="submit"
-            className="btn btn-primary"
-          />
+          <input type="submit" className="btn btn-primary" />
         </div>
       </div>
     </form>
