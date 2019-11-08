@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
+import useForm from "react-hook-form";
 import { useUser } from "../hooks/auth";
 import DatePicker from "react-datepicker";
-
 import Firebase from "../services/firebase";
 import { AirportSelect } from "./airport";
 
@@ -85,60 +85,27 @@ export const TripList = () => {
   );
 };
 
+function addNewTrip(data, e) {
+
+  console.log(data);
+  e.target.reset();
+
+  // const user = useUser();
+  //
+  // Firebase.firestore()
+  //   .collection("users")
+  //   .doc(user.uid)
+  //   .collection("trips")
+  //   .add({trip})
+  //   .then(() => {
+  //   });
+}
+
 export const TripNew = () => {
-  const [airline, setAirline] = useState("");
-  const [flightId, setFlightId] = useState("");
-  const [origin, setOrigin] = useState(null);
-  const [destination, setDestination] = useState(null);
-  const [departureTime, setDepartureTime] = useState(new Date());
-  const [arrivalTime, setArrivalTime] = useState(new Date());
-  const [reservationId, setReservationId] = useState("");
-  const [seatId, setSeatId] = useState("");
-  const [gate, setGate] = useState("");
-  const [travelClass, setTravelClass] = useState("economy");
-  const [additionalNotes, setAdditionalNotes] = useState("");
-
-  const user = useUser();
-
-  function onSubmit(e) {
-    e.preventDefault();
-
-    if (!origin || !destination) {
-      return console.warn("Value is required");
-    }
-
-    Firebase.firestore()
-      .collection("users")
-      .doc(user.uid)
-      .collection("trips")
-      .add({
-        airline: airline,
-        flight_id: flightId,
-        origin_iata: origin.iata,
-        origin_airport: origin.name,
-        origin_city: origin.city,
-        origin_country: origin.country,
-        destination_iata: destination.iata,
-        destination_airport: destination.name,
-        destination_city: destination.city,
-        destination_country: destination.country,
-        departure_time: departureTime,
-        arrival_time: arrivalTime,
-        reservation_id: reservationId,
-        seat_id: seatId,
-        gate: gate,
-        travel_class: travelClass,
-        additional_notes: additionalNotes
-      })
-      .then(() => {
-        setAirline("");
-        setOrigin(null);
-        setDestination(null);
-      });
-  }
+  const { handleSubmit, register } = useForm();
 
   return (
-    <form onSubmit={onSubmit}>
+    <form onSubmit={handleSubmit(addNewTrip)}>
       <div className="card bg-light">
         <div className="card-header">
           <strong>Add a new trip</strong>
@@ -149,64 +116,44 @@ export const TripNew = () => {
               <label htmlFor="airline">Airline</label>
               <input
                 id="airline"
-                value={airline}
+                name="airline_id"
                 type="text"
                 className="form-control"
-                onChange={e => {
-                  setAirline(e.currentTarget.value);
-                }}
+                ref={register}
               />
             </div>
             <div className="form-group col-md-4">
-              <label htmlFor="flight-id">Flight No.</label>
+              <label htmlFor="flight-no">Flight No.</label>
               <input
-                id="flight-id"
-                value={flightId}
+                id="flight-no"
+                name="flight_id"
                 type="text"
                 className="form-control"
-                onChange={e => {
-                  setFlightId(e.currentTarget.value);
-                }}
+                ref={register}
               />
             </div>
           </div>
           <div className="form-row">
             <div className="form-group col-md-6">
               <label htmlFor="origin-airport">Origin</label>
-              <AirportSelect
-                selected={origin}
-                onSelect={airport => setOrigin(airport)}
-                id="origin-airport"
-              />
+              <AirportSelect id="origin-airport" />
             </div>
             <div className="form-group col-md-6">
               <label htmlFor="destination-airport">Destination</label>
-              <AirportSelect
-                selected={destination}
-                onSelect={airport => setDestination(airport)}
-                id="destination-airport"
-              />
+              <AirportSelect id="destination-airport" />
             </div>
           </div>
           <div className="form-row">
             <div className="form-group col-md-6">
               <label htmlFor="">Departure Time</label>
               <div>
-                <DatePicker
-                  className="form-control"
-                  selected={departureTime}
-                  onChange={date => setDepartureTime(date)}
-                />
+                <DatePicker className="form-control" />
               </div>
             </div>
             <div className="form-group col-md-6">
               <label htmlFor="">Arrival Time</label>
               <div>
-                <DatePicker
-                  className="form-control"
-                  selected={arrivalTime}
-                  onChange={date => setArrivalTime(date)}
-                />
+                <DatePicker className="form-control" />
               </div>
             </div>
           </div>
@@ -218,10 +165,10 @@ export const TripNew = () => {
               <label htmlFor="reservation-id">Reservation ID</label>
               <input
                 id="reservation-id"
-                value={reservationId}
+                name="reservation_id"
                 type="text"
                 className="form-control"
-                onChange={e => setReservationId(e.currentTarget.value)}
+                ref={register}
               />
             </div>
             <div className="form-group col-md-4">
@@ -231,10 +178,10 @@ export const TripNew = () => {
               </label>
               <input
                 id="seat-id"
-                value={seatId}
+                name="seat_id"
                 type="text"
                 className="form-control"
-                onChange={e => setSeatId(e.currentTarget.value)}
+                ref={register}
               />
             </div>
             <div className="form-group col-md-4">
@@ -243,22 +190,22 @@ export const TripNew = () => {
               </label>
               <input
                 id="gate"
-                value={gate}
+                name="gate"
                 type="text"
                 className="form-control"
-                onChange={e => setGate(e.currentTarget.value)}
+                ref={register}
               />
             </div>
           </div>
           <div className="form-row">
             <div className="form-group col-md-4">
-              <label htmlFor="class">Class</label>
+              <label htmlFor="travel-class">Class</label>
               <select
-                name="class"
-                defaultValue={travelClass}
-                id="class"
+                id="travel-class"
+                name="travel-class"
+                defaultValue="economy"
                 className="form-control"
-                onChange={e => setTravelClass(e.currentTarget.value)}
+                ref={register}
               >
                 <option value="economy">Economy</option>
                 <option value="economy-plus">Economy Plus</option>
@@ -274,16 +221,19 @@ export const TripNew = () => {
           <div className="form-group">
             <label htmlFor="notes">Notes</label>
             <textarea
-              className="form-control w-100"
-              value={additionalNotes}
               id="notes"
+              name="notes"
+              className="form-control w-100"
               rows="3"
-              onChange={e => setAdditionalNotes(e.currentTarget.value)}
+              ref={register}
             />
           </div>
         </div>
         <div className="card-footer text-right">
-          <button className="btn btn-primary">Submit</button>
+          <input
+            type="submit"
+            className="btn btn-primary"
+          />
         </div>
       </div>
     </form>
