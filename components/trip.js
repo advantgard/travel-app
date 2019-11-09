@@ -103,6 +103,8 @@ function addNewTrip(data, e) {
 export const TripNew = () => {
   const [origin, setOrigin] = useState(null);
   const [destination, setDestination] = useState(null);
+  const [departureTime, setDepartureTime] = useState(new Date());
+  const [arrivalTime, setArrivalTime] = useState(new Date());
 
   const { handleSubmit, register, setValue } = useForm();
 
@@ -147,7 +149,7 @@ export const TripNew = () => {
                 selected={origin}
                 onSelect={airport => {
                   setOrigin(airport);
-                  registerAirport("origin", airport);
+                  registerAirport("origin", origin);
                 }}
                 ref={register({ name: "origin" })}
               />
@@ -159,7 +161,7 @@ export const TripNew = () => {
                 selected={destination}
                 onSelect={airport => {
                   setDestination(airport);
-                  registerAirport("destination", airport);
+                  registerAirport("destination", destination);
                 }}
                 ref={register({ name: "destination" })}
               />
@@ -169,13 +171,31 @@ export const TripNew = () => {
             <div className="form-group col-md-6">
               <label htmlFor="">Departure Time</label>
               <div>
-                <DatePicker className="form-control" />
+                <DatePicker
+                  name="departure_time"
+                  className="form-control"
+                  selected={departureTime}
+                  onChange={date => {
+                    setDepartureTime(date);
+                    setValue("departure_time", departureTime);
+                  }}
+                  ref={register({ name: "departure_time" })}
+                />
               </div>
             </div>
             <div className="form-group col-md-6">
               <label htmlFor="">Arrival Time</label>
               <div>
-                <DatePicker className="form-control" />
+                <DatePicker
+                  name="arrival_time"
+                  className="form-control"
+                  selected={arrivalTime}
+                  onChange={date => {
+                    setArrivalTime(date);
+                    setValue("arrival_time", arrivalTime);
+                  }}
+                  ref={register({ name: "arrival_time" })}
+                />
               </div>
             </div>
           </div>
