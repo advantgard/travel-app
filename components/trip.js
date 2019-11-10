@@ -85,12 +85,21 @@ export const TripList = () => {
   );
 };
 
-function addNewTrip(data, e) {
-  console.log(data);
+function addNewTrip({origin, destination, ...rest}, e) {
+
+  const trip = {
+    "origin_airport": origin.name,
+    "origin_city": origin.city,
+    "origin_country": origin.country,
+    "destination_airport": destination.name,
+    "destination_city": destination.city,
+    "destination_country": destination.country,
+    ...rest
+  };
+
+  console.log(trip);
   e.target.reset();
 
-  // const user = useUser();
-  //
   // Firebase.firestore()
   //   .collection("users")
   //   .doc(user.uid)
@@ -149,7 +158,7 @@ export const TripNew = () => {
                 selected={origin}
                 onSelect={airport => {
                   setOrigin(airport);
-                  registerAirport("origin", origin);
+                  registerAirport("origin", airport);
                 }}
                 ref={register({ name: "origin" })}
               />
@@ -161,7 +170,7 @@ export const TripNew = () => {
                 selected={destination}
                 onSelect={airport => {
                   setDestination(airport);
-                  registerAirport("destination", destination);
+                  registerAirport("destination", airport);
                 }}
                 ref={register({ name: "destination" })}
               />

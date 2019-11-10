@@ -53,7 +53,7 @@ export const AirportSelect = ({
     changeSuggestions([]);
   };
 
-  const SuggestionList = () => (
+  const SuggestionList = id => (
     <ul className="list-group position-absolute" style={{ zIndex: 1000 }}>
       {suggestions.map((airport, index) => (
         <li
@@ -88,7 +88,7 @@ export const AirportSelect = ({
         }}
         autoComplete="off"
       />
-      {suggestions ? <SuggestionList /> : ""}
+      {suggestions ? <SuggestionList id={id}/> : ""}
     </>
   );
 };
