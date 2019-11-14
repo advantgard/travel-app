@@ -85,15 +85,14 @@ export const TripList = () => {
   );
 };
 
-function addNewTrip({origin, destination, ...rest}, e) {
-
+function addNewTrip({ origin, destination, ...rest }, e) {
   const trip = {
-    "origin_airport": origin.name,
-    "origin_city": origin.city,
-    "origin_country": origin.country,
-    "destination_airport": destination.name,
-    "destination_city": destination.city,
-    "destination_country": destination.country,
+    origin_airport: origin.name,
+    origin_city: origin.city,
+    origin_country: origin.country,
+    destination_airport: destination.name,
+    destination_city: destination.city,
+    destination_country: destination.country,
     ...rest
   };
 
@@ -115,14 +114,18 @@ export const TripNew = () => {
   const [departureTime, setDepartureTime] = useState(new Date());
   const [arrivalTime, setArrivalTime] = useState(new Date());
 
-  const { handleSubmit, register, setValue } = useForm();
+  const { handleSubmit, register, errors, setValue } = useForm();
 
   function registerAirport(key, airport) {
     setValue(key, airport);
   }
 
   return (
-    <form onSubmit={handleSubmit(addNewTrip)}>
+    <form
+      className="needs-validation"
+      onSubmit={handleSubmit(addNewTrip)}
+      noValidate
+    >
       <div className="card bg-light">
         <div className="card-header">
           <strong>Add a new trip</strong>
@@ -130,29 +133,41 @@ export const TripNew = () => {
         <div className="card-body">
           <div className="form-row">
             <div className="form-group col-md-8">
-              <label htmlFor="airline">Airline</label>
+              <label htmlFor="airline_id">Airline</label>
               <input
-                id="airline"
                 name="airline_id"
                 type="text"
-                className="form-control"
-                ref={register}
+                className={`form-control${
+                  errors["airline_id"] ? " is-invalid" : ""
+                }`}
+                ref={register({ required: true })}
               />
+              {errors["airline_id"] ? (
+                <div className="invalid-feedback">This field is required</div>
+              ) : (
+                ""
+              )}
             </div>
             <div className="form-group col-md-4">
-              <label htmlFor="flight-no">Flight No.</label>
+              <label htmlFor="flight_id">Flight No.</label>
               <input
-                id="flight-no"
                 name="flight_id"
                 type="text"
-                className="form-control"
-                ref={register}
+                className={`form-control${
+                  errors["airline_id"] ? " is-invalid" : ""
+                }`}
+                ref={register({ required: true })}
               />
+              {errors["flight_id"] ? (
+                <div className="invalid-feedback">This field is required</div>
+              ) : (
+                ""
+              )}
             </div>
           </div>
           <div className="form-row">
             <div className="form-group col-md-6">
-              <label htmlFor="origin-airport">Origin</label>
+              <label htmlFor="origin_airport">Origin</label>
               <AirportSelect
                 id="origin_airport"
                 selected={origin}
@@ -213,9 +228,9 @@ export const TripNew = () => {
           </div>
           <div className="form-row">
             <div className="form-group col-md-4">
-              <label htmlFor="reservation-id">Reservation ID</label>
+              <label htmlFor="reservation_id">Reservation ID</label>
               <input
-                id="reservation-id"
+                id="reservation_id"
                 name="reservation_id"
                 type="text"
                 className="form-control"
@@ -223,12 +238,12 @@ export const TripNew = () => {
               />
             </div>
             <div className="form-group col-md-4">
-              <label htmlFor="seat-id">
+              <label htmlFor="seat_id">
                 Seat No.{" "}
                 <small className="text-secondary">(if available)</small>
               </label>
               <input
-                id="seat-id"
+                id="seat_id"
                 name="seat_id"
                 type="text"
                 className="form-control"
@@ -250,9 +265,9 @@ export const TripNew = () => {
           </div>
           <div className="form-row">
             <div className="form-group col-md-4">
-              <label htmlFor="travel-class">Class</label>
+              <label htmlFor="travel_class">Class</label>
               <select
-                id="travel-class"
+                id="travel_class"
                 name="travel_class"
                 defaultValue="economy"
                 className="form-control"
