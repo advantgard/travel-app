@@ -85,29 +85,6 @@ export const TripList = () => {
   );
 };
 
-function addNewTrip({ origin, destination, ...rest }, e) {
-  const trip = {
-    origin_airport: origin.name,
-    origin_city: origin.city,
-    origin_country: origin.country,
-    destination_airport: destination.name,
-    destination_city: destination.city,
-    destination_country: destination.country,
-    ...rest
-  };
-
-  console.log(trip);
-  e.target.reset();
-
-  // Firebase.firestore()
-  //   .collection("users")
-  //   .doc(user.uid)
-  //   .collection("trips")
-  //   .add({trip})
-  //   .then(() => {
-  //   });
-}
-
 export const TripNew = () => {
   const [origin, setOrigin] = useState(null);
   const [destination, setDestination] = useState(null);
@@ -115,9 +92,37 @@ export const TripNew = () => {
   const [arrivalTime, setArrivalTime] = useState(new Date());
 
   const { handleSubmit, register, errors, setValue } = useForm();
+  const user = useUser();
 
   function registerAirport(key, airport) {
     setValue(key, airport);
+  }
+
+  function addNewTrip({ origin, destination, ...rest }, e) {
+    const trip = {
+      origin_airport: origin.name,
+      origin_city: origin.city,
+      origin_country: origin.country,
+      origin_iata: origin.iata,
+      destination_airport: destination.name,
+      destination_city: destination.city,
+      destination_country: destination.country,
+      destination_iata: destination.iata,
+      departure_time: departureTime,
+      arrival_time: arrivalTime,
+      ...rest
+    };
+
+    if (user.uid) {
+      Firebase.firestore()
+        .collection("users")
+        .doc(user.uid)
+        .collection("trips")
+        .add(trip)
+        .then(() => {
+          e.target.reset();
+        });
+    }
   }
 
   return (
@@ -201,9 +206,7 @@ export const TripNew = () => {
                   selected={departureTime}
                   onChange={date => {
                     setDepartureTime(date);
-                    setValue("departure_time", date);
                   }}
-                  ref={register({ name: "departure_time" })}
                 />
               </div>
             </div>
@@ -216,9 +219,7 @@ export const TripNew = () => {
                   selected={arrivalTime}
                   onChange={date => {
                     setArrivalTime(date);
-                    setValue("arrival_time", date);
                   }}
-                  ref={register({ name: "arrival_time" })}
                 />
               </div>
             </div>
