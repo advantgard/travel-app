@@ -201,7 +201,7 @@ export const TripNew = () => {
                   selected={departureTime}
                   onChange={date => {
                     setDepartureTime(date);
-                    setValue("departure_time", departureTime);
+                    setValue("departure_time", date);
                   }}
                   ref={register({ name: "departure_time" })}
                 />
@@ -216,7 +216,7 @@ export const TripNew = () => {
                   selected={arrivalTime}
                   onChange={date => {
                     setArrivalTime(date);
-                    setValue("arrival_time", arrivalTime);
+                    setValue("arrival_time", date);
                   }}
                   ref={register({ name: "arrival_time" })}
                 />
