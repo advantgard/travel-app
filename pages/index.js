@@ -2,15 +2,17 @@ import React from "react";
 import Head from "next/head";
 import { useUser } from "../hooks/auth";
 import { Nav } from "../components/nav";
-import { TripList, TripNew } from "../components/trip";
+import { TripList, TripNew, useUserTrips } from "../components/trip";
 import dynamic from "next/dist/next-server/lib/dynamic";
 
-const DownloadItinerary = dynamic(() => import('../components/print'), {
+const DownloadItinerary = dynamic(() => import('../components/pdf'), {
   ssr: false
 });
 
 const Home = () => {
+
   const user = useUser();
+  const trips = useUserTrips();
 
   return (
     <div>
@@ -34,7 +36,7 @@ const Home = () => {
             <TripList />
             {user ? <TripNew /> : ""}
             <div className="row">
-              <DownloadItinerary/>
+              { trips.length ? <DownloadItinerary trips={trips}/> : ""}
             </div>
           </div>
         </div>

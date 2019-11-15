@@ -5,7 +5,7 @@ import DatePicker from "react-datepicker";
 import Firebase from "../services/firebase";
 import { AirportSelect } from "./airport";
 
-function useUserTrips() {
+export function useUserTrips() {
   const user = useUser();
 
   const [trips, setTrips] = useState([]);
