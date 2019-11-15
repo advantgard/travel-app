@@ -3,6 +3,11 @@ import Head from "next/head";
 import { useUser } from "../hooks/auth";
 import { Nav } from "../components/nav";
 import { TripList, TripNew } from "../components/trip";
+import dynamic from "next/dist/next-server/lib/dynamic";
+
+const DownloadItinerary = dynamic(() => import('../components/print'), {
+  ssr: false
+});
 
 const Home = () => {
   const user = useUser();
@@ -28,6 +33,9 @@ const Home = () => {
           <div className="col-sm-10">
             <TripList />
             {user ? <TripNew /> : ""}
+            <div className="row">
+              <DownloadItinerary/>
+            </div>
           </div>
         </div>
       </div>
