@@ -4,15 +4,30 @@ import { useUser } from "../hooks/auth";
 import { Nav } from "../components/nav";
 import { TripList, TripNew, useUserTrips } from "../components/trip";
 import dynamic from "next/dist/next-server/lib/dynamic";
+import { ItineraryPDF } from "../components/ItineraryPDF";
 
-const DownloadItinerary = dynamic(() => import('../components/pdf'), {
+const DownloadPDFLink = dynamic(() => import("../components/DownloadPDF"), {
   ssr: false
 });
 
 const Home = () => {
-
   const user = useUser();
   const trips = useUserTrips();
+
+  function generateItineraryDownloadLink(trips) {
+    if (trips) {
+      return (
+        <DownloadPDFLink
+          document={<ItineraryPDF trips={trips} />}
+          documentName="itinerary"
+          className="btn btn-primary"
+          label="Print Itinerary"
+        />
+      );
+    } else {
+      return <div> </div>;
+    }
+  }
 
   return (
     <div>
@@ -31,13 +46,10 @@ const Home = () => {
       <Nav />
       <div className="container">
         <div className="row">
-          <div className="col-sm-2">Friend Section</div>
-          <div className="col-sm-10">
+          <div className="col-sm-12">
             <TripList />
             {user ? <TripNew /> : ""}
-            <div className="row">
-              { trips.length ? <DownloadItinerary trips={trips}/> : ""}
-            </div>
+            <div className="row">{generateItineraryDownloadLink(trips)}</div>
           </div>
         </div>
       </div>
