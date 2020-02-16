@@ -5,6 +5,7 @@ import { Nav } from "../components/nav";
 import { TripList, TripNew, useUserTrips } from "../components/trip";
 import dynamic from "next/dist/next-server/lib/dynamic";
 import { ItineraryPDF } from "../components/ItineraryPDF";
+import amadeus from "../services/amadeus";
 
 const DownloadPDFLink = dynamic(() => import("../components/DownloadPDF"), {
   ssr: false
@@ -28,6 +29,24 @@ const Home = () => {
       return <div> </div>;
     }
   }
+
+  function amadeusExample() {
+    amadeus.shopping.flightOffersSearch
+      .get({
+        originLocationCode: "SYD",
+        destinationLocationCode: "BKK",
+        departureDate: "2020-08-01",
+        adults: "2"
+      })
+      .then(function(response) {
+        console.log(response.data);
+      })
+      .catch(function(responseError) {
+        console.log(responseError.code);
+      });
+  }
+
+  amadeusExample();
 
   return (
     <div>

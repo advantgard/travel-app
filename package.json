@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@react-pdf/renderer": "^1.6.8",
+    "amadeus": "^3.3.0",
     "firebase": "^7.2.1",
     "fuse.js": "^3.4.5",
     "next": "9.1.1",
